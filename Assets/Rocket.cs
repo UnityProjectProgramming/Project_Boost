@@ -9,6 +9,9 @@ public class Rocket : MonoBehaviour {
     Rigidbody rigidbody;
     AudioSource audioSource;
 
+    enum State { Alive, Dying, Transcending};
+    State state = State.Alive;
+
 	// Use this for initialization
 	void Start ()
     {
@@ -19,26 +22,42 @@ public class Rocket : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
-        Thrust();
-        Rotate();
-	}
+        if(state == State.Alive)
+        {
+            Thrust();
+            Rotate();
+        }
+    }
 
 
     private void OnCollisionEnter(Collision collision)
     {
+        if (state != State.Alive) { return; } // ignore Collisions when dead.
+
         switch(collision.gameObject.tag)
         {
             case "Friendly":
+                state = State.Alive;
                 break;
             case "Finish":
-                print("ok");
-                SceneManager.LoadScene(1);
+                state = State.Transcending;
+                Invoke("LoadNextLevel", 1.0f);
                 break;
             default:
-                print("Dead");
-                SceneManager.LoadScene(0);
+                state = State.Dying;
+                audioSource.Stop();
+                Invoke("LoadFirstLevel", 1.0f);
                 break;
         }
+    }
+
+    private void LoadNextLevel()
+    {
+        SceneManager.LoadScene(1); //TODO allow for more than 2 levels
+    }
+    private void LoadFirstLevel()
+    {
+        SceneManager.LoadScene(0);
     }
 
     private void Thrust()
@@ -46,12 +65,12 @@ public class Rocket : MonoBehaviour {
         if (Input.GetKey(KeyCode.Space))
         {
             rigidbody.AddRelativeForce(Vector3.up * Time.deltaTime * mainThrust);
-            if (!audioSource.isPlaying)
+            if (!audioSource.isPlaying && state == State.Alive)
             {
                 audioSource.Play();
             }
         }
-        else
+        else if(state == State.Alive)
         {
             audioSource.Stop();
         }
