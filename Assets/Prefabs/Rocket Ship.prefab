@@ -583,6 +583,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rcsThrust: 250
   mainThrust: 270
+  levelLoadDelay: 2
   mainEngineSFX: {fileID: 8300000, guid: c1ff02b63f8215e419845f3251fbdcf0, type: 3}
   loadNextLevelSFX: {fileID: 8300000, guid: a89d7bd77b1fc494ab1c187b55750a3b, type: 3}
   crashSFX: {fileID: 8300000, guid: 4876bf375fdd8f0468def54e038246cb, type: 3}
