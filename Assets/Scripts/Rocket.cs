@@ -48,7 +48,7 @@ public class Rocket : MonoBehaviour {
     {
         if(Input.GetKeyDown(KeyCode.L))
         {
-            SceneManager.LoadScene(1);
+            LoadNextLevel();
         }
         if(Input.GetKeyDown(KeyCode.C))
         {
@@ -96,7 +96,10 @@ public class Rocket : MonoBehaviour {
 
     private void LoadNextLevel()
     {
-        SceneManager.LoadScene(1); //TODO allow for more than 2 levels
+        int sceneLevelIndex = SceneManager.GetActiveScene().buildIndex;
+        int numboerOfLevels = SceneManager.sceneCountInBuildSettings;
+        int nextSceneIndex = (sceneLevelIndex + 1) % numboerOfLevels;
+        SceneManager.LoadScene(nextSceneIndex); //TODO allow for more than 2 levels
     }
     private void LoadFirstLevel()
     {
