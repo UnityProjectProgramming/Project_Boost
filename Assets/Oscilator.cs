@@ -20,7 +20,7 @@ public class Oscilator : MonoBehaviour
 
 	void Update ()
     {
-        //TODO protect aginst 0
+        if (period <= Mathf.Epsilon) { return; }
         float cycles = Time.time / period;
         const float tau = Mathf.PI * 2f;
         float rawSinWave = Mathf.Sin(cycles * tau);
